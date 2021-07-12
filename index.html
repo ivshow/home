@@ -1,0 +1,92 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+	<title>Vshow</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="icon" href="//f.dooomi.com/image/do-ico.png">
+	<link rel="stylesheet" href="//at.alicdn.com/t/font_2666546_fnw43lmvsx.css">
+	<link rel="stylesheet" href="assets/css/main.min.css" />
+</head>
+
+<body class="is-preload">
+	<div id="wrapper">
+		<!-- <div id="bg"></div> -->
+		<template v-for="(item, index) in videos" :key="index">
+			<video class="video" :class="'video' + index" v-show="current == index" autoplay :src="'./assets/video/'+item"
+				muted onended="app.onEnd()" x-webkit-airplay="allow" x5-video-player-type="h5" x5-video-player-fullscreen="true"
+				x5-video-orientation="portrait" playsinline webkit-playsinline></video>
+		</template>
+
+		<div id="overlay"></div>
+		<div id="main" :class="{black: black}">
+			<!-- Header -->
+			<header id="header">
+				<h1>Vshow</h1>
+				<p>简约而不失大气，素雅而不失风采</p>
+				<nav>
+					<ul>
+						<li><a href="http://vshow.dooomi.com" class="iconfont icon-home"></a></li>
+						<li><a href="http://doui.dooomi.com" class="iconfont icon-do"></a></li>
+						<li><a href="http://dooomi.com/love" class="iconfont icon-heart"></a></li>
+						<li><a href="http://dooomi.com/game" class="iconfont icon-game"></a></li>
+					</ul>
+				</nav>
+			</header>
+
+			<!-- Footer -->
+			<footer id="footer">
+				<a href="https://beian.miit.gov.cn/" target="_black"><span class="copyright">&copy;
+						陕ICP备2021000400号-1</span></a>
+			</footer>
+
+		</div>
+	</div>
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
+	<script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+	<script>
+		window.onload = function () { document.body.classList.remove('is-preload'); }
+		window.ontouchmove = function () { return false; }
+		window.onorientationchange = function () { document.body.scrollTop = 0; }
+
+		var videos = ["wheat.mp4", "star.mp4", "tree.mp4"];
+
+		var app = new Vue({
+			el: '#wrapper',
+			data: {
+				current: random(0, videos.length - 1),
+				videos: videos,
+				black: false
+			},
+			mounted() {
+				this.play()
+			},
+			methods: {
+				onEnd() {
+					this.current++;
+					if (this.current >= this.videos.length) this.current = 0;
+					this.$nextTick(this.play);
+				},
+				play() {
+					document.querySelector('.video' + this.current).play();
+					this.black = this.current === 0;
+				}
+			},
+		})
+
+		document.addEventListener(
+			"WeixinJSBridgeReady",
+			function () {
+				app.play();
+			},
+			false
+		);
+
+		function random(min, max) {
+			return Math.round(Math.random() * (max - min)) + min;
+		}
+	</script>
+</body>
+
+</html>

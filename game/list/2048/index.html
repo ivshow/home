@@ -1,0 +1,320 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>2048</title>
+<link rel="icon" type="resource/png" href="../../resource/game.png"/>
+<script>window.wpo={start:new Date*1,pid:"300",page:"game_2048"};</script>
+
+<meta name=apple-mobile-web-app-capable content=yes>
+<meta name=apple-mobile-web-app-status-bar-style content=black>
+<meta name=viewport content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0, maximum-scale=1, user-scalable=no, minimal-ui">
+<meta name=format-detection content="telephone=no, email=no">
+
+<link rel=stylesheet href="main.css">
+<script type="text/javascript">
+	(function() {
+		var a = document.getElementsByTagName("html")[0];
+		window.Session = {
+			appDomain : a.getAttribute("data-app-domain") || "",
+			staticDomain : a.getAttribute("data-static-domain") || ""
+		}
+	})();
+	window.registNS = function(fullNS, isIgnorSelf) {
+		var reg = /^[_$a-z]+[_$a-z0-9]*/i;
+		var nsArray = fullNS.split(".");
+		var sEval = "";
+		var sNS = "";
+		var n = isIgnorSelf ? nsArray.length - 1 : nsArray.length;
+		for ( var i = 0; i < n; i++) {
+			if (!reg.test(nsArray[i])) {
+				throw new Error("Invalid namespace:" + nsArray[i] + "");
+				return
+			}
+			if (i != 0) {
+				sNS += "."
+			}
+			sNS += nsArray[i];
+			sEval += "if(typeof(" + sNS + ")=='undefined') " + sNS
+					+ "=new Object();else " + sNS + ";"
+		}
+		if (sEval != "") {
+			return eval(sEval)
+		}
+		return {}
+	};
+	window.addEventMap = function(c, d, b, a) {
+		$.each(d, function(e, f) {
+			$(c).bind(f, function(h) {
+				var g = h.target || h.srcElement;
+				if (!g) {
+					return false
+				}
+				for ( var j in b[f]) {
+					var i = b[f][j];
+					if ((g.className && $(g).hasClass(j))) {
+						i.call(g, h);
+						break
+					} else {
+						if (ancestor = $(g).parents("." + j)[0]) {
+							i.call(ancestor, h);
+							break
+						}
+					}
+				}
+				if (typeof a === "function") {
+					a.call(h)
+				}
+			})
+		})
+	};
+	var fixedTheElementOnScroll = function(c, a) {
+		if (!c) {
+			return false
+		}
+		a = parseInt(a, 10) || 0;
+		var b = function(g) {
+			var f = $(c).offset();
+			if ($(c).attr("data-fixed") != "1") {
+				$(c).attr({
+					"data-original-top" : f.top
+				})
+			}
+			var d = $(window).scrollTop() + a;
+			if ($(c).attr("data-original-top") <= d) {
+				if ($.browser.ie == 6) {
+					$(c).attr({
+						"data-fixed" : 1
+					});
+					$(c).css(
+							{
+								position : "absolute",
+								top : d - $(c).attr("data-original-top")
+										+ c.offsetHeight,
+								left : 0
+							})
+				} else {
+					if ($(c).attr("data-fixed") != "1") {
+						$(c).attr({
+							"data-fixed" : 1
+						});
+						$(c).css({
+							position : "fixed",
+							top : a,
+							left : f.left
+						})
+					}
+				}
+			} else {
+				$(c).attr("data-fixed", 0);
+				$(c).css({
+					position : "static"
+				})
+			}
+		};
+		b();
+		$(window).scroll(b)
+	};
+	String.prototype.trim = function() {
+		return this.replace(/^\s*|\s*$/g, "")
+	};
+	String.format = function(c, a) {
+		c = String(c);
+		var b = Array.prototype.slice.call(arguments, 1), d = Object.prototype.toString;
+		if (b.length) {
+			b = b.length == 1 ? (a !== null
+					&& (/\[object Array\]|\[object Object\]/.test(d.call(a))) ? a
+					: b)
+					: b;
+			return c.replace(/#\{(.+?)\}/g, function(e, g) {
+				var f = b[g];
+				if ("[object Function]" == d.call(f)) {
+					f = f(g)
+				}
+				return ("undefined" == typeof f ? "" : f)
+			})
+		}
+		return c
+	};
+	(function() {
+		var b = ("abbr,article,aside,audio,canvas,datalist,details,dialog,eventsource,figure,footer,header,hgroup,mark,menu,meter,nav,output,progress,section,time,video")
+				.split(","), a = b.length;
+		while (a--) {
+			document.createElement(b[a])
+		}
+	})();
+</script>
+<script>
+	wpo.head = new Date * 1;
+	wpo.ready = function(f, e) {
+		e = e || document;
+		if (/complete/.test(e.readyState)) {
+			f()
+		} else {
+			if (e.addEventListener) {
+				if ("interactive" == e.readyState) {
+					f()
+				} else {
+					e.addEventListener("DOMContentLoaded", f, false)
+				}
+			} else {
+				var d = function() {
+					d = new Function;
+					f()
+				};
+				void function() {
+					try {
+						e.body.doScroll("left")
+					} catch (a) {
+						return setTimeout(arguments.callee, 10)
+					}
+					d()
+				}();
+				e.attachEvent("onreadystatechange", function() {
+					("complete" == e.readyState) && d()
+				})
+			}
+		}
+	};
+	wpo.load = function(a) {
+		if (window.addEventListener) {
+			window.addEventListener("load", a, false)
+		} else {
+			if (document.attachEvent) {
+				window.attachEvent("onload", a)
+			}
+		}
+	};
+	wpo.ready(function() {
+		wpo.dom = new Date * 1
+	});
+	wpo.load(function() {
+		var b = wpo.load = new Date * 1;
+		setTimeout(function() {
+			var g = [ "pid=" + wpo.pid, "head=" + (wpo.head - wpo.start),
+					"tti=" + (wpo.tti - wpo.start),
+					"dom=" + (wpo.dom - wpo.start),
+					"load=" + (wpo.load - wpo.start), "page=" + wpo.page,
+					"r=" + b ], a = "wpo_" + b, c = window[a] = new Image;
+			c.onload = (c.onerror = function() {
+				window[a] = null
+			});
+			c.src = document.getElementsByTagName("html")[0]
+					.getAttribute("data-app-domain")
+					+ "/log/v.gif?" + g.join("&");
+			c = null
+		}, 0)
+	});
+</script>
+</head>
+<body>
+	<section class=mod-page-body>
+		<div class="mod-page-main wordwrap clearfix">
+			<div class=mod-pageheader></div>
+			<div class=mod-pagecontent>
+				<div class=container id=screenShotContainer>
+					<div class=heading>
+						<div class=num-container>
+							<div class=target-container>
+								<div class=x-title>挑战目标</div>
+								<div class=x-the-num id=game_target>1024</div>
+							</div>
+						</div>
+						<div class=scores-container>
+							<div class=time-container>
+								<div class=x-title>移动次数</div>
+								<div class=x-the-num>0</div>
+							</div>
+							<div class=score-container>
+								<div class=x-title>当前总分</div>
+								<div class=x-the-num>0</div>
+							</div>
+							<div class=best-container>
+								<div class=x-title>最佳总分</div>
+								<div class=x-the-num>0</div>
+							</div>
+						</div>
+					</div>
+					<div class=game-container>
+						<div class=game-message>
+							<p></p>
+							<div class=lower>
+								<a class=retry-button>重来</a><a class=keep-playing-button>继续</a>
+							</div>
+						</div>
+						<div class=grid-container>
+							<div class=grid-row>
+								<div class=grid-cell></div>
+								<div class=grid-cell></div>
+								<div class=grid-cell></div>
+								<div class=grid-cell></div>
+							</div>
+							<div class=grid-row>
+								<div class=grid-cell></div>
+								<div class=grid-cell></div>
+								<div class=grid-cell></div>
+								<div class=grid-cell></div>
+							</div>
+							<div class=grid-row>
+								<div class=grid-cell></div>
+								<div class=grid-cell></div>
+								<div class=grid-cell></div>
+								<div class=grid-cell></div>
+							</div>
+							<div class=grid-row>
+								<div class=grid-cell></div>
+								<div class=grid-cell></div>
+								<div class=grid-cell></div>
+								<div class=grid-cell></div>
+							</div>
+						</div>
+						<div class=tile-container></div>
+					</div>
+				</div>
+				<div class=mod-other>
+					<div class=mod-settings>
+						<div class=clearfix>
+							<a class=setting-text href="#" id=settingEntry>游戏设置</a>
+						</div>
+						<div class=setting-pannel id=settingPanel>
+							<div class=sp-inner>
+								<div class=x-ad>
+									<input type=checkbox value=1 id=audioOn name=check><label
+										for=audioOn>开启游戏音效</label>
+								</div>
+								<div class=x-btn>
+									<button class=btn-confirm id=btnConfirm>确定</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				
+					<div class=mod-weixin>
+						<b>游戏规则：</b><br>上下左右滑动游戏面板，所有小格子会随同一方向移动，相同的数字和自动合并在一起，
+						每次合并都累积得分，如果所有小格子中最大的数字和“挑战目标”相等，则挑战成功，
+						但此时可继续玩儿，紧急更大的挑战目标；每次移动后，计数器都会+1，
+						同时会在空白格子中随机产生一个2或4；当游戏面板中所有的小格子都被填满， 且没有两个相邻的格子数字相同，则挑战失败，游戏结束！
+						在游戏过程中，可随时将游戏成绩分享到微信朋友圈或者微信好友。<br>
+					</div>
+					<div class=mod-audio>
+						<audio id=gameAudio preload=auto>
+							<source src="raw/ka.ogg" type=audio/ogg>
+							<source src="raw/ka.mp3" type=audio/mpeg>
+						</audio>
+					</div>
+					<div class=mod-loading>
+						<img src="img/loading.gif?v=73786963" alt=loading>
+						<div class=x-loading-text>游戏数据加载中，请骚等...</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<script	src="weixin-api.js"></script>
+	<script
+		src="html2canvas.js"></script>
+	<script
+		src="main.js"></script>
+	<script>
+		wpo.tti = new Date * 1;
+	</script>

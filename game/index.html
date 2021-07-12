@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>游戏</title>
+<link rel="icon" type="resource/png" href="./resource/game.png"/>
+<link rel="stylesheet" href="./resource/main.css">
+<link rel="stylesheet" href="./resource/sortable.min.css">
+<script type="text/javascript" src="./resource/sortable.min.js"></script>
+<script type="text/javascript" src="./resource/jquery-2.1.1.min.js"></script>
+</head>
+<body style="background: url('./resource/bg.svg') center/cover no-repeat;height: 100vh;">
+<main class="sortable">
+<div class="container">
+  <div class="wrapper">
+    <div style="display: flex;justify-content: center;padding-bottom: 2rem;"><h1>娱乐一下？</h1></div>
+    <!-- <ul class="sortable__nav nav">
+      <li> <a data-sjslink="all" class="nav__link"> 全部 </a> </li>
+      <li> <a data-sjslink="flatty" class="nav__link"> 扁平的 </a> </li>
+      <li> <a data-sjslink="funny" class="nav__link"> 有趣的 </a> </li>
+    </ul> -->
+    <div id="sortable" class="sjs-default">
+
+    </div>
+  </div>
+</div>
+</div>
+<script type="text/javascript" src="./game.js"></script>
+<!-- <script type="text/javascript" src="./bg.js"></script> -->
+<script type="text/javascript">
+      $(function(){
+        console.log(data);
+        for(var i = 0, len = data.length; i < len; i++) {
+              $('#sortable').append("<div data-sjsel='flatty'><a href='" +data[i].href +"' target='_blank'>"
+                +"<div class='card'> <img class='card__picture' src='" + data[i].img +"' alt=''>"
+                +"<div class='card-infos'>"
+                +"<h2 class='card__title'>"+ data[i].title +"</h2>"
+                +"<p class='card__text'>"+ data[i].text +"</p>"
+                +"</div>"
+                +"</div>"
+                +"</div>")
+          }
+          document.querySelector('#sortable').sortablejs()
+        //获取json
+        // $.ajax({
+        //   type: "GET",
+        //   url: "game.json",
+        //   dataType: "json",
+        //   success: function(res){
+        //     debugger
+        //     var data = res;
+        //     for(var i = 0, len = data.length; i < len; i++) {
+        //       $('#sortable').append("<a href='"+ data[i].href + "><div data-sjsel='flatty'>"
+        //         +"<div class='card'> <img class='card__picture' src='" + data[i].img +"' alt=''>"
+        //         +"<div class='card-infos'>"
+        //         +"<h2 class='card__title'>"+ data[i].title +"</h2>"
+        //         +"<p class='card__text'>"+ data[i].text +"</p>"
+        //         +"</div>"
+        //         +"</div>"
+        //         +"</div></a>")
+				//     }
+        //   }
+        // })
+      })
+      
+</script>
+</body>
+</html>
