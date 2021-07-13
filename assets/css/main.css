@@ -343,6 +343,7 @@ input, select, textarea {
 		text-align: center;
 		top: 0;
 		width: 100%;
+		z-index: 1;
 	}
 
 		#main:before {
@@ -1057,6 +1058,9 @@ input, select, textarea {
 			width: 100vw;
 			height: 100vh;
 			object-fit: cover;
+			position: absolute;
+			left: 0;
+			top: 0;
 		}
 
 		#main.black {
@@ -1065,4 +1069,11 @@ input, select, textarea {
 
 		.black #header nav a:before {
 			border-color: #333;
+		}
+
+		.fade-enter-active, .fade-leave-active {
+			transition: opacity 5s;
+		}
+		.fade-enter, .fade-leave-to {
+			opacity: 0;
 		}

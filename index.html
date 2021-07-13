@@ -13,11 +13,13 @@
 <body class="is-preload">
 	<div id="wrapper">
 		<!-- <div id="bg"></div> -->
-		<template v-for="(item, index) in videos" :key="index">
-			<video class="video" :class="'video' + index" v-show="current == index" autoplay :src="'./assets/video/'+item"
-				muted onended="app.onEnd()" x-webkit-airplay="allow" x5-video-player-type="h5" x5-video-player-fullscreen="true"
-				x5-video-orientation="portrait" playsinline webkit-playsinline></video>
-		</template>
+		<transition-group name="fade" tag="div">
+			<template v-for="(item, index) in videos">
+				<video class="video" :class="'video' + index" v-show="current == index" autoplay :src="'./assets/video/'+item" :key="index"
+					muted onended="app.onEnd()" x-webkit-airplay="allow" x5-video-player-type="h5" x5-video-player-fullscreen="true"
+					x5-video-orientation="portrait" playsinline webkit-playsinline></video>
+			</template>
+		</transition-group>
 
 		<div id="overlay"></div>
 		<div id="main" :class="{black: black}">
