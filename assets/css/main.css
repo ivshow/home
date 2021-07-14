@@ -1071,9 +1071,12 @@ input, select, textarea {
 			border-color: #333;
 		}
 
-		.fade-enter-active, .fade-leave-active {
+		.video-fade-enter-active, .video-fade-leave-active {
 			transition: opacity 5s;
 		}
-		.fade-enter, .fade-leave-to {
+		.video-fade-enter, .video-fade-leave-to {
 			opacity: 0;
+		}
+		.coco-modal-body {
+			text-align: center !important;
 		}

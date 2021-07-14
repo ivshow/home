@@ -13,11 +13,11 @@
 <body class="is-preload">
 	<div id="wrapper">
 		<!-- <div id="bg"></div> -->
-		<transition-group name="fade" tag="div">
+		<transition-group name="video-fade" tag="div">
 			<template v-for="(item, index) in videos">
-				<video class="video" :class="'video' + index" v-show="current == index" autoplay :src="'./assets/video/'+item" :key="index"
-					muted onended="app.onEnd()" x-webkit-airplay="allow" x5-video-player-type="h5" x5-video-player-fullscreen="true"
-					x5-video-orientation="portrait" playsinline webkit-playsinline></video>
+				<video class="video" :class="'video' + index" v-show="current == index" autoplay :src="'./assets/video/'+item"
+					:key="index" muted onended="app.onEnd()" x-webkit-airplay="allow" x5-video-player-type="h5"
+					x5-video-player-fullscreen="true" x5-video-orientation="portrait" playsinline webkit-playsinline></video>
 			</template>
 		</transition-group>
 
@@ -31,7 +31,7 @@
 					<ul>
 						<li><a href="http://vshow.dooomi.com" class="iconfont icon-home"></a></li>
 						<li><a href="http://doui.dooomi.com" class="iconfont icon-do"></a></li>
-						<li><a href="http://dooomi.com/love" class="iconfont icon-heart"></a></li>
+						<li><a class="iconfont icon-heart" @click="clickLove"></a></li>
 						<li><a href="http://dooomi.com/game" class="iconfont icon-game"></a></li>
 					</ul>
 				</nav>
@@ -47,6 +47,7 @@
 	</div>
 	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
 	<script src="http://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+	<script src="https://unpkg.com/coco-modal/coco-modal.min.js"></script>
 	<script>
 		window.onload = function () { document.body.classList.remove('is-preload'); }
 		window.ontouchmove = function () { return false; }
@@ -73,6 +74,18 @@
 				play() {
 					document.querySelector('.video' + this.current).play();
 					this.black = this.current === 0;
+				},
+				clickLove() {
+					coco({
+						footer: false,
+						title: '扫描下方二维码，体验小程序 ~ ~',
+						width: '500px',
+						top: '25vh',
+						okButton: false,
+						cancelButton: false,
+						html: '<div style="font-size: 30px;margin: 20px;">敬请期待!</div>',
+						borderRadius: '10px',
+					});
 				}
 			},
 		})
