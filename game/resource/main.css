@@ -60,6 +60,7 @@ hr{
   max-width: 980px;
   margin: 0 auto;
   padding: 0 10px;
+  overflow-x: hidden;
 }
 .wrapper{
   padding: 40px 0;
