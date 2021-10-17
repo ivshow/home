@@ -28,7 +28,7 @@
     </div>
     <div class="row">
       <div class="col"></div>
-      <div class="col"><span class="icon icon-logo"></span></div>
+      <div class="col logo-wrapper"><span class="icon icon-logo"></span></div>
       <div class="col"></div>
     </div>
     <div class="row">
@@ -173,6 +173,13 @@
   <script> (function (window, document, undefined) { 'use strict'; var lastTime = 0, vendors = ['ms', 'moz', 'webkit', 'o'], i; for (i = 0; i < vendors.length && !window.requestAnimationFrame; ++i) { window.requestAnimationFrame = window[vendors[i] + 'RequestAnimationFrame']; window.cancelAnimationFrame = window[vendors[i] + 'CancelAnimationFrame'] || window[vendors[i] + 'CancelRequestAnimationFrame']; } if (!window.requestAnimationFrame) { window.requestAnimationFrame = function (callback) { var currTime = new Date().getTime(), timeToCall = Math.max(0, 16 - (currTime - lastTime)), id = window.setTimeout(function () { callback(currTime + timeToCall); }, timeToCall); lastTime = currTime + timeToCall; return id; }; } if (!window.cancelAnimationFrame) { window.cancelAnimationFrame = function (id) { clearTimeout(id); }; } })(window, document);</script>
   <script src="javascripts/bg.js"></script>
   <script src="javascripts/sound.js"></script>
+  <script>
+    document.querySelector('.logo-wrapper').onclick = function () {
+      if (window.parent !== window.self) {
+        window.parent.postMessage('onRelaxLogoClick', '*');
+      }
+    }
+  </script>
 </body>
 
 </html>
